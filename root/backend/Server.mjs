@@ -10,6 +10,7 @@ import CreateNewSession from "./RequestHandlers/CreateNewSession.mjs";
 import PushChunk from "./RequestHandlers/PushChunk.mjs";
 import AllSessions from "./RequestHandlers/AllSessions.mjs";
 import Videos from "./RequestHandlers/Videos.mjs";
+import { resolve } from "path";
 
 class Server {
   constructor() {
@@ -45,6 +46,13 @@ class Server {
     this.app.post("/api/push-chunk/:sessionId", AuthenticateUser, PushChunk);
     this.app.get("/api/all-sessions", AuthenticateUser, AllSessions);
     this.app.get("/api/videos/:videoId", AuthenticateUser, Videos);
+
+    //serving static files
+    this.app.use(express.static("./public"));
+    this.app.get("*", (req, res) => {
+      res.sendFile(resolve("public", "index.html"));
+    });
+
     this.server.keepAliveTimeout = 50000;
     this.server.listen(process.env.PORT, () => {
       console.log(

@@ -1,6 +1,9 @@
 #ignoting todo file
 todo
 
+#ignoring public folder
+public/
+
 # Logs
 logs
 *.log
